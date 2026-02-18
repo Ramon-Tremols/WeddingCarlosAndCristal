@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C & C — Nuestra Boda · 15 Marzo 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=EB+Garamond:ital,wght@0,400;1,400&family=Jost:wght@100;200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        :root {
+            --crimson: #780909;
+            --crimson-light: #9e1c1c;
+            --gold: #deb47a;
+            --gold-light: #e8d5b7;
+            --cream: #faf7f2;
+            --dark: #1a1008;
+            --text: #3a2a1a;
+            --muted: #8a7060;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 10px;
+            height: 10px;
+            background: var(--crimson);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+            mix-blend-mode: multiply;
+        }
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--crimson);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.12s ease;
+            opacity: 0.5;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            transform: scale(1.08);
+            animation: heroZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroZoom {
+            from { transform: scale(1.08); }
+            to { transform: scale(1.15); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(15,5,0,0.55) 0%,
+                rgba(60,10,10,0.35) 40%,
+                rgba(15,5,0,0.75) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-eyebrow {
+            font-family: 'Jost', sans-serif;
+            font-weight: 700;
+            letter-spacing: 10px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            opacity: 0;
+            animation: fadeSlideUp 1.2s 0.4s forwards;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 300;
+            font-size: clamp(5rem, 14vw, 12rem);
+            line-height: 0.9;
+            letter-spacing: -2px;
+            margin: 20px 0;
+            opacity: 0;
+            animation: fadeSlideUp 1.4s 0.7s forwards;
+        }
+
+        .hero h1 .amp {
+            color: var(--gold);
+            font-style: italic;
+        }
+
+        .hero-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 24px 0;
+            opacity: 0;
+            animation: fadeSlideUp 1.2s 1s forwards;
+        }
+
+        .hero-ornament .line-gold {
+            height: 1px;
+            width: 80px;
+            background: linear-gradient(to right, transparent, var(--gold));
+        }
+        .hero-ornament .line-gold.right {
+            background: linear-gradient(to left, transparent, var(--gold));
+        }
+
+        .diamond {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        .hero-date {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            letter-spacing: 4px;
+            opacity: 0;
+            animation: fadeSlideUp 1.2s 1.2s forwards;
+        }
+
+        .hero-subtitle {
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            font-size: 0.75rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 16px;
+            color: rgba(255,255,255,0.7);
+            opacity: 0;
+            animation: fadeSlideUp 1.2s 1.4s forwards;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeIn 1s 2.5s forwards;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(1.2); }
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* ===== INTRO QUOTE ===== */
+        .intro {
+            background: var(--dark);
+            padding: 120px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro::before {
+            content: '"';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Playfair Display', serif;
+            font-size: 20rem;
+            color: rgba(200,169,126,0.04);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .intro-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .intro-top-line {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .intro-top-line span {
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            font-size: 0.7rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .thin-line {
+            height: 1px;
+            width: 60px;
+            background: var(--gold);
+            opacity: 0.5;
+        }
+
+        .intro blockquote {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            line-height: 1.8;
+            color: rgba(255,255,255,0.75);
+        }
+
+        .intro blockquote strong {
+            color: var(--gold);
+            font-style: normal;
+        }
+
+        /* ===== SECTION HEADER ===== */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header .tag {
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            font-size: 0.65rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 300;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--dark);
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+
+        .section-header .ornament-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .section-header .ornament-line .h-line {
+            height: 1px;
+            width: 50px;
+            background: var(--gold);
+        }
+
+        .section-header .ornament-line .h-diamond {
+            width: 5px;
+            height: 5px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        /* ===== COUNTDOWN ===== */
+        .countdown-section {
+            background: var(--cream);
+            padding: 100px 20px;
+        }
+
+        .countdown-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .countdown-item {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .countdown-num {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 7vw, 6rem);
+            font-weight: 300;
+            color: var(--crimson);
+            line-height: 1;
+            position: relative;
+        }
+
+        .countdown-num::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 0;
+            background: var(--gold);
+            transition: height 0.6s;
+        }
+
+        .countdown-item:hover .countdown-num::after {
+            height: 100%;
+        }
+
+        .countdown-label {
+            font-family: 'Jost', sans-serif;
+            font-weight: 800;
+            font-size: 0.65rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-top: 12px;
+        }
+
+        .countdown-sep {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--gold);
+            opacity: 0.4;
+            align-self: flex-start;
+            padding-top: 10px;
+            font-weight: 300;
+        }
+
+        /* ===== VENUE ===== */
+        .venue-section {
+            padding: 100px 20px;
+            background: white;
+        }
+
+        .venue-layout {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.12);
+        }
+
+        .venue-img-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .venue-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.8s ease;
+        }
+
+        .venue-img-wrap:hover img {
+            transform: scale(1.05);
+        }
+
+        .venue-img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, transparent 60%, rgba(122,0,0,0.15));
+        }
+
+        .venue-info {
+            background: var(--dark);
+            color: white;
+            padding: 70px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .venue-info .tag {
+            font-family: 'Jost', sans-serif;
+            font-weight: 900;
+            font-size: 0.75rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .venue-info h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 300;
+            font-size: 2.8rem;
+            line-height: 1.15;
+            margin-bottom: 30px;
+        }
+
+        .venue-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .venue-detail-icon {
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(200,169,126,0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .venue-detail-text .label {
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 800;
+        }
+
+        .venue-detail-text .value {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.85);
+            margin-top: 2px;
+        }
+
+        .venue-divider {
+            width: 40px;
+            height: 1px;
+            background: rgba(200,169,126,0.4);
+            margin: 30px 0;
+        }
+
+        /* ===== PHOTOS / GALLERY ===== */
+        .gallery-section {
+            padding: 100px 20px;
+            background: var(--cream);
+        }
+
+        .gallery-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: auto;
+            gap: 16px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s;
+            filter: grayscale(20%);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.07);
+            filter: grayscale(0%);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(122,0,0,0.4) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Layout positions */
+        .gi-1 { grid-column: 1/6; grid-row: 1; height: 380px; }
+        .gi-2 { grid-column: 6/10; grid-row: 1; height: 380px; }
+        .gi-3 { grid-column: 10/13; grid-row: 1; height: 180px; }
+        .gi-4 { grid-column: 10/13; grid-row: 1; height: 180px; margin-top: 200px; } /* offset trick */
+        .gi-5 { grid-column: 1/5; grid-row: 2; height: 280px; }
+        .gi-6 { grid-column: 5/9; grid-row: 2; height: 280px; }
+        .gi-7 { grid-column: 9/13; grid-row: 2; height: 280px; }
+
+        /* Simpler approach */
+        .gallery-row1 {
+            display: grid;
+            grid-template-columns: 5fr 4fr 3fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .gallery-row1 .gi { overflow: hidden; }
+        .gallery-row1 .gi img { width: 100%; height: 360px; object-fit: cover; display: block; transition: transform 0.8s ease, filter 0.5s; filter: grayscale(15%); }
+        .gallery-row1 .gi:hover img { transform: scale(1.06); filter: grayscale(0%); }
+
+        .gallery-row2 {
+            display: grid;
+            grid-template-columns: 3fr 4fr 5fr;
+            gap: 16px;
+        }
+        .gallery-row2 .gi { overflow: hidden; }
+        .gallery-row2 .gi img { width: 100%; height: 280px; object-fit: cover; display: block; transition: transform 0.8s ease, filter 0.5s; filter: grayscale(15%); }
+        .gallery-row2 .gi:hover img { transform: scale(1.06); filter: grayscale(0%); }
+
+        .gallery-item-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(122,0,0,0.35), transparent 50%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .gallery-item-wrap:hover::after {
+            opacity: 1;
+        }
+
+        /* ===== DRESS CODE ===== */
+        .dress-section {
+            background: var(--dark);
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .dress-section .section-header h2 { color: white; }
+        .dress-section .section-header .tag { color: var(--gold); }
+
+        .dress-palette {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .palette-swatch {
+            text-align: center;
+        }
+
+        .swatch {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+
+        .palette-swatch:hover .swatch {
+            transform: scale(1.15);
+        }
+
+        .swatch-label {
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .dress-note {
+            max-width: 520px;
+            margin: 30px auto 0;
+            border: 1px solid rgba(200,169,126,0.3);
+            padding: 24px 32px;
+            position: relative;
+        }
+
+        .dress-note::before {
+            content: '⚠';
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            padding: 0 10px;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        .dress-note p {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+        }
+
+        .dress-note strong {
+            color: var(--crimson-light);
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline-section {
+            background: white;
+            padding: 100px 20px;
+        }
+
+        .timeline {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 1fr 40px 1fr;
+            gap: 0;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) .tl-content { text-align: right; grid-column: 1; grid-row: 1; }
+        .timeline-item:nth-child(odd) .tl-dot { grid-column: 2; grid-row: 1; }
+        .timeline-item:nth-child(odd) .tl-empty { grid-column: 3; grid-row: 1; }
+
+        .timeline-item:nth-child(even) .tl-empty { grid-column: 1; grid-row: 1; }
+        .timeline-item:nth-child(even) .tl-dot { grid-column: 2; grid-row: 1; }
+        .timeline-item:nth-child(even) .tl-content { grid-column: 3; grid-row: 1; text-align: left; }
+
+        .tl-dot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tl-dot-inner {
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 1px var(--gold);
+            transition: transform 0.3s;
+        }
+
+        .timeline-item:hover .tl-dot-inner {
+            transform: scale(1.5);
+            background: var(--crimson);
+            box-shadow: 0 0 0 1px var(--crimson);
+        }
+
+        .tl-content {
+            padding: 0 24px;
+        }
+
+        .tl-time {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--crimson);
+        }
+
+        .tl-event {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-top: 4px;
+        }
+
+        /* ===== RSVP ===== */
+        .rsvp-section {
+            background: url('https://images.unsplash.com/photo-1478146059778-26028b07395a?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            position: relative;
+            padding: 140px 20px;
+            text-align: center;
+        }
+
+        .rsvp-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(15,5,0,0.75);
+        }
+
+        .rsvp-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .rsvp-inner .tag {
+            font-family: 'Jost', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .rsvp-inner h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 300;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .rsvp-inner p {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 1.45rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 50px;
+        }
+
+        .rsvp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: #0a05022d;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 20px 50px;
+            font-family: 'Jost', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rsvp-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--crimson);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+            z-index: -1;
+        }
+
+        .rsvp-btn:hover {
+            color: white;
+            border-color: var(--crimson);
+        }
+
+        .rsvp-btn:hover::before {
+            transform: scaleX(1);
+        }
+
+        .rsvp-phone {
+            display: block;
+            margin-top: 30px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #0a0502;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .footer-monogram {
+            font-family: 'Playfair Display', serif;
+            font-weight: 300;
+            font-size: 4rem;
+            color: var(--gold);
+            opacity: 0.5;
+            letter-spacing: 8px;
+            margin-bottom: 24px;
+        }
+
+        .footer-date {
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.556);
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Delay utilities */
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.45s; }
+        .delay-4 { transition-delay: 0.6s; }
+
+        /* ===== RESPONSIVE ===== */
+            @media (max-width: 1008px) {
+            .hero h1{font-size: clamp(10rem, 14vw, 12rem);}
+        }
+        @media (max-width: 768px) {
+            .hero h1{font-size: clamp(10rem, 14vw, 12rem);}
+            .venue-layout { grid-template-columns: 1fr; }
+            .venue-img-wrap { height: 300px; }
+            .venue-info { padding: 50px 32px; }
+            .gallery-row1, .gallery-row2 { grid-template-columns: 1fr 1fr; }
+            .gallery-row1 .gi img, .gallery-row2 .gi img { height: 220px; }
+            .timeline::before { left: 20px; }
+            .timeline-item { grid-template-columns: 40px 1fr; }
+            .timeline-item:nth-child(odd) .tl-content,
+            .timeline-item:nth-child(even) .tl-content { text-align: left; grid-column: 2; }
+            .timeline-item:nth-child(odd) .tl-dot,
+            .timeline-item:nth-child(even) .tl-dot { grid-column: 1; }
+            .tl-empty { display: none; }
+        }
+        @media (max-width: 580px) {
+            .hero h1{font-size: clamp(8rem, 14vw, 12rem);}
+        }
+        @media (max-width: 480px) {
+            .gallery-row1, .gallery-row2 { grid-template-columns: 1fr; }
+            .gallery-row1 .gi:nth-child(3) { display: none; }
+            .countdown-sep { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- ===== HERO ===== -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-eyebrow">Matrimonio · 2026</p>
+            <h1>C <span class="amp">&</span> C</h1>
+            <div class="hero-ornament">
+                <div class="line-gold"></div>
+                <div class="diamond"></div>
+                <div class="line-gold right"></div>
+            </div>
+            <p class="hero-date">15 · Marzo · 2026</p>
+            <p class="hero-subtitle">¡Nos Casamos!</p>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </header>
+
+    <!-- ===== INTRO ===== -->
+    <section class="intro">
+        <div class="intro-inner reveal">
+            <div class="intro-top-line">
+                <div class="thin-line"></div>
+                <span>Nuestra Historia</span>
+                <div class="thin-line"></div>
+            </div>
+            <blockquote>
+                Queremos celebrar nuestro <strong>'sí, acepto'</strong> rodeados de las personas que más queremos, y tenemos el honor de invitarte a celebrar nuestra unión en matrimonio. Tu presencia es nuestro regalo más preciado.
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- ===== COUNTDOWN ===== -->
+    <section class="countdown-section">
+        <div class="section-header reveal">
+            <h2>La Cuenta Regresiva</h2>
+            <div class="ornament-line">
+                <div class="h-line"></div>
+                <div class="h-diamond"></div>
+                <div class="h-line"></div>
+            </div>
+            <span class="tag">Faltan Solo</span>
+        </div>
+        <div class="countdown-grid reveal delay-2">
+            <div class="countdown-item">
+                <div class="countdown-num" id="days">00</div>
+                <div class="countdown-label">Días</div>
+            </div>
+            <div class="countdown-sep">·</div>
+            <div class="countdown-item">
+                <div class="countdown-num" id="hours">00</div>
+                <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-sep">·</div>
+            <div class="countdown-item">
+                <div class="countdown-num" id="minutes">00</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-sep">·</div>
+            <div class="countdown-item">
+                <div class="countdown-num" id="seconds">00</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== VENUE ===== -->
+    <section class="venue-section">
+        <div class="venue-layout reveal">
+            <div class="venue-img-wrap">
+                <img src="assets/lugar.jpeg" alt="Hacienda Trujillo">
+            </div>
+            <div class="venue-info">
+                <p class="tag">El Lugar</p>
+                <h2>Hacienda<br>Trujillo</h2>
+                <div class="venue-divider"></div>
+                <div class="venue-detail"> 
+                    <div class="venue-detail-icon">
+                        <span class="material-icons" style="color: white;">calendar_today</span>
+                    </div>
+                    <div class="venue-detail-text">
+                        <p class="label">Fecha</p>
+                        <p class="value">15 de Marzo, 2026</p>
+                    </div>
+                </div>
+                
+                <div class="venue-detail">
+                    <div class="venue-detail-icon">
+                        <span class="material-icons" style="color: white;">schedule</span>
+                    </div>
+                    <div class="venue-detail-text">
+                        <p class="label">Hora</p>
+                    <p class="value">5:00 PM en punto</p>
+                </div>
+            </div>
+            
+            <div class="venue-detail">
+                <div class="venue-detail-icon">
+                    <span class="material-icons" style="color: white;">location_on</span>
+                </div>
+                <div class="venue-detail-text">
+                    <p class="label">Ubicación</p>
+                    <p class="value">Hacienda Trujillo, República Dominicana</p>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+    </section>
+
+    <!-- ===== GALLERY ===== -->
+    <section class="gallery-section">
+        <div class="section-header reveal">
+            <span class="tag">Nuestra Historia en Fotos</span>
+            <h2>Nuestros Momentos</h2>
+            <div class="ornament-line">
+                <div class="h-line"></div>
+                <div class="h-diamond"></div>
+                <div class="h-line"></div>
+            </div>
+        </div>
+
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <div class="gallery-row1 reveal">
+                <div class="gi gallery-item-wrap">
+                    <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=80" alt="Pareja">
+                </div>
+                <div class="gi gallery-item-wrap">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80" alt="Boda">
+                </div>
+                <div class="gi gallery-item-wrap">
+                    <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80" alt="Flores">
+                </div>
+            </div>
+            <div class="gallery-row2 reveal delay-2">
+                <div class="gi gallery-item-wrap">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Anillos">
+                </div>
+                <div class="gi gallery-item-wrap">
+                    <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=80" alt="Pareja">
+                </div>
+                <div class="gi gallery-item-wrap">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80" alt="Fiesta">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DRESS CODE ===== -->
+    <section class="dress-section">
+        <div class="section-header reveal">
+            <span class="tag">Vestimenta</span>
+            <h2>Código de Vestimenta</h2>
+            <div class="ornament-line" style="--gold: #c8a97e;">
+                <div class="h-line" style="background:var(--gold)"></div>
+                <div class="h-diamond" style="background:var(--gold)"></div>
+                <div class="h-line" style="background:var(--gold)"></div>
+            </div>
+        </div>
+
+        <div class="dress-palette reveal delay-1">
+            <div class="palette-swatch">
+                <div class="swatch" style="background:#1a1a2e;"></div>
+                <span class="swatch-label">Negro</span>
+            </div>
+            <div class="palette-swatch">
+                <div class="swatch" style="background:#4a4a6a;"></div>
+                <span class="swatch-label">Azul Marino</span>
+            </div>
+            <div class="palette-swatch">
+                <div class="swatch" style="background:#5a4a3a;"></div>
+                <span class="swatch-label">Café</span>
+            </div>
+            <div class="palette-swatch">
+                <div class="swatch" style="background:#c8a97e;"></div>
+                <span class="swatch-label">Dorado</span>
+            </div>
+            <div class="palette-swatch">
+                <div class="swatch" style="background:#6a7a5a;"></div>
+                <span class="swatch-label">Verde</span>
+            </div>
+            <div class="palette-swatch">
+                <div class="swatch" style="background:#6a4a5a;"></div>
+                <span class="swatch-label">Vino</span>
+            </div>
+        </div>
+
+        <div class="dress-note reveal delay-2">
+            <p>Los colores <strong>blanco y rojo</strong> están reservados exclusivamente para los novios. Vestimenta formal requerida.</p>
+        </div>
+    </section>
+
+    <!-- ===== TIMELINE ===== -->
+    <section class="timeline-section">
+        <div class="section-header reveal">
+            <span class="tag">Programa del Día</span>
+            <h2>El Gran Día</h2>
+            <div class="ornament-line">
+                <div class="h-line"></div>
+                <div class="h-diamond"></div>
+                <div class="h-line"></div>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div class="tl-content">
+                    <p class="tl-time">4:30 PM</p>
+                    <p class="tl-event">Recepción de Invitados</p>
+                </div>
+                <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                <div class="tl-empty"></div>
+            </div>
+            <div class="timeline-item reveal delay-1">
+                <div class="tl-empty"></div>
+                <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                <div class="tl-content">
+                    <p class="tl-time">5:00 PM</p>
+                    <p class="tl-event">Ceremonia</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal delay-2">
+                <div class="tl-content">
+                    <p class="tl-time">6:30 PM</p>
+                    <p class="tl-event">Cóctel & Fotos</p>
+                </div>
+                <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                <div class="tl-empty"></div>
+            </div>
+            <div class="timeline-item reveal delay-3">
+                <div class="tl-empty"></div>
+                <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                <div class="tl-content">
+                    <p class="tl-time">8:00 PM</p>
+                    <p class="tl-event">Cena & Celebración</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal delay-4">
+                <div class="tl-content">
+                    <p class="tl-time">10:00 PM</p>
+                    <p class="tl-event">Baile & Fiesta</p>
+                </div>
+                <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+                <div class="tl-empty"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== RSVP ===== -->
+    <section class="rsvp-section">
+        <div class="rsvp-inner reveal">
+            <span class="tag">Confirmación</span>
+            <h2>¿Contamos Contigo?</h2>
+            <p>Por favor confirma tu asistencia antes del 1 de marzo de 2026.</p>
+            <a href="https://wa.me/18097426612" class="rsvp-btn" target="_blank">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                </svg>
+                Confirmar por WhatsApp
+            </a>
+            <!-- <span class="rsvp-phone">+1 (809) 742-6612</span> -->
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-monogram">C & C</div>
+        <p class="footer-date">15 · Marzo · 2026 · Hacienda Trujillo</p>
+    </footer>
+
+    <script>
+        // ===== CURSOR =====
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            cursor.style.left = mx + 'px';
+            cursor.style.top = my + 'px';
+        });
+
+        function animRing() {
+            rx += (mx - rx) * 0.12;
+            ry += (my - ry) * 0.12;
+            ring.style.left = rx + 'px';
+            ring.style.top = ry + 'px';
+            requestAnimationFrame(animRing);
+        }
+        animRing();
+
+        document.querySelectorAll('a, button, .gallery-item-wrap, .palette-swatch').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
+                cursor.style.background = 'var(--gold)';
+                ring.style.opacity = '0';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+                cursor.style.background = 'var(--crimson)';
+                ring.style.opacity = '0.5';
+            });
+        });
+
+        // ===== COUNTDOWN =====
+        function updateCountdown() {
+            const target = new Date('2026-03-15T17:00:00');
+            const now = new Date();
+            const diff = target - now;
+
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+
+            document.getElementById('days').textContent = String(d).padStart(2, '0');
+            document.getElementById('hours').textContent = String(h).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // ===== SCROLL REVEAL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ===== PARALLAX HERO =====
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const heroBg = document.querySelector('.hero-bg');
+            if (heroBg) {
+                heroBg.style.transform = `scale(1.08) translateY(${scrolled * 0.3}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
